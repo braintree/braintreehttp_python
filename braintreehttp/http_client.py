@@ -25,7 +25,7 @@ class HttpClient(object):
         else:
             raise TypeError("injector must be a function or implement the __call__ method")
 
-    def execute(self, request):
+    def execute(self, request, parse=True):
         reqCpy = copy.deepcopy(request)
 
         try:
@@ -48,8 +48,11 @@ class HttpClient(object):
                 headers=reqCpy.headers,
                 data=data)
 
-        return self.parse_response(resp)
+        if parse:
+            return self.parse_response(resp)
+        return resp
 
+    
     def parse_response(self, response):
         status_code = response.status_code
 
